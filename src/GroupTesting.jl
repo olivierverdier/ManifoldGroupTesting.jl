@@ -1,5 +1,9 @@
 module GroupTesting
 
-# Write your package code here.
+using Manifolds
+
+include("Diff.jl")
+include("Group.jl")
+include("Action.jl")
 
 end
