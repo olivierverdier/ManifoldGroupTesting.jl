@@ -1,4 +1,4 @@
-import GroupTools: matrix_from_lin_endomorphism, algebra
+import ManifoldGroupUtils: matrix_from_lin_endomorphism, algebra
 """
 A collection of general purpose methods
 for testing Lie groups.

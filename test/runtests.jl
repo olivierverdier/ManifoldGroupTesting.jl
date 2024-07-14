@@ -1,7 +1,7 @@
 import GroupTesting as GT
 using Test
 using Manifolds
-import GroupTools: rand_lie
+import ManifoldGroupUtils: rand_lie
 import Random
 rng = Random.default_rng()
 
