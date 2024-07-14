@@ -1,9 +1,9 @@
-# GroupTesting.jl
+# ManifoldGroupTesting.jl
 
-`GroupTesting.jl` contains several useful functions to test new group implementations.
+`ManifoldGroupTesting.jl` contains several useful functions to test new group implementations.
 
 
 ```@autodocs
-Modules = [GroupTesting]
+Modules = [ManifoldGroupTesting]
 Order = [:type, :function]
 ```

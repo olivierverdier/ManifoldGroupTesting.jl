@@ -9,19 +9,19 @@ end
 
 
 using Documenter
-using GroupTesting
+using ManifoldGroupTesting
 
 
 makedocs(
-    sitename = "GroupTesting",
+    sitename = "ManifoldGroupTesting",
     format = Documenter.HTML(),
-    modules = [GroupTesting]
+    modules = [ManifoldGroupTesting]
 )
 
 # Documenter can also automatically deploy documentation to gh-pages.
 # See "Hosting Documentation" and deploydocs() in the Documenter manual
 # for more information.
 deploydocs(
-    repo="github.com/olivierverdier/GroupTesting.jl.git",
+    repo="github.com/olivierverdier/ManifoldGroupTesting.jl.git",
     push_preview=true,
 )

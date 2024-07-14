@@ -1,4 +1,4 @@
-module GroupTesting
+module ManifoldGroupTesting
 
 using Manifolds
 

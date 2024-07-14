@@ -1,4 +1,4 @@
-import GroupTesting as GT
+import ManifoldGroupTesting as GT
 using Test
 using Manifolds
 import ManifoldGroupUtils: rand_lie
