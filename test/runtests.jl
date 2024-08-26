@@ -1,7 +1,7 @@
 import ManifoldGroupTesting as GT
 using Test
 using Manifolds
-import ManifoldGroupUtils: rand_lie
+import ManifoldGroupUtils: rand_lie, translate_from_id
 import Random
 rng = Random.default_rng()
 

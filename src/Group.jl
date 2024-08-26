@@ -148,3 +148,72 @@ end
 check_zero_Identity(G) = isapprox(algebra(G),
                                   zero_vector(G, Identity(G)),
                                   zero_vector(G, identity_element(G)))
+
+"""
+    check_exp_invariant(G, exp, χ, v, χ_)
+
+The invariant exponential of  a Lie group fulfils
+```math
+χ' \exp_{χ}(v) = \exp_{χ'χ}(χ' v)
+```
+
+There is a right version which is not implemented. It would check that
+```math
+\exp_χ(v) χ' = \exp_{χχ'}(v χ')
+```
+"""
+check_exp_invariant(G, exp, χ, v, χ_) = begin
+    χ1 = translate(G, χ_, exp(G, χ, v), (LeftAction(), LeftSide()))
+    v_ = translate_diff(G, χ_, χ, v, (LeftAction(), LeftSide()))
+    χ_χ = translate(G, χ_, χ, (LeftAction(), LeftSide()))
+    χ2 = exp(G, χ_χ, v_)
+    return isapprox(G, χ1, χ2)
+end
+
+"""
+    check_exp_exp_(G, exp, exp!, χ_, χ, v)
+
+Compare `exp` and `exp!`.
+"""
+check_exp_exp_(G, exp, exp!, χ_, χ, v) = begin
+    χ1 = exp!(G, χ_, χ, v)
+    χ2 = exp(G, χ, v)
+    return χ1 === χ_ && isapprox(G, χ1, χ2)
+end
+"""
+    check_log_log_(G, log, log!, v_, χ1, χ2)
+
+Compare `log` and `log!`.
+"""
+check_log_log_(G, log, log!, v_, χ1, χ2) = begin
+    v__ = log!(G, v_, χ1, χ2)
+    v = log(G, χ1, χ2)
+    return v__ === v_ && isapprox(TangentSpace(G, χ1), v, v__)
+end
+
+"""
+    check_exp_log(G, exp, log, χ1, χ2)
+
+Check the identity
+```math
+exp_{χ_1}(log_{χ_1}(χ_2)) = χ_2
+```
+"""
+check_exp_log(G, exp, log, χ1, χ2) = begin
+    v = log(G, χ1, χ2)
+    χ_ = exp(G, χ1, v)
+    return isapprox(G, χ2, χ_)
+end
+"""
+    check_log_exp(G, log, exp, χ, v)
+
+Check the identity
+```math
+log_{χ}(exp_{χ}(v)) = v
+```
+"""
+check_log_exp(G, log, exp, χ, v) = begin
+    χ_ = exp(G, χ, v)
+    v_ = log(G, χ, χ_)
+    return isapprox(TangentSpace(G, χ), v, v_)
+end
