@@ -13,6 +13,7 @@ _transporter(G, χ, ξ, dir) = translate_from_id(G, χ, ξ, _get_side_from_actio
         χ, # element of G
         ξ, # element of Alg(G)
         p, # element of M
+        id_func, # `identity_element` or `Identity`
     )
 
 This should hold for *any* group action ``A`` on any manifold.
@@ -26,11 +27,11 @@ and ``T_L(χ, ξ) := χξ`` (the left translation), then we have the identity:
 where, for a *left* action, ``T`` is the *right* translation,
 and for a *right* action, ``T`` is the *left* translation.
 """
-check_apply_diff_group(A::AbstractGroupAction{TAD}, χ, ξ, p) where {TAD} = begin
+check_apply_diff_group(A::AbstractGroupAction{TAD}, χ, ξ, p, id_func=Identity) where {TAD} = begin
     G = base_group(A)
     p_ = apply(A, χ, p)
     v1 = apply_diff_group(A, χ, _transporter(G, χ, ξ, TAD()), p)
-    v2 = apply_diff_group(A, identity_element(G), ξ, p_)
+    v2 = apply_diff_group(A, id_func(G), ξ, p_)
     return isapprox(TangentSpace(G, p_), v1, v2)
 end
 

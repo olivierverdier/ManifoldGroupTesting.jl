@@ -13,5 +13,7 @@
     @test GT.check_apply_morphism_Identity(A, p)
     @test GT.check_trivial_infinitesimal_action(A, p, identity_element)
     @test GT.check_switch_action_direction(A, χ1, p)
-    @test GT.check_apply_diff_group(A, χ1, ξ1, p) broken = A isa RotationAction
+    @testset for id_func in [Identity, identity_element]
+        @test GT.check_apply_diff_group(A, χ1, ξ1, p) broken = A isa RotationAction
+    end
 end
