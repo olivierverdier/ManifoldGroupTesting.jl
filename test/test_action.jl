@@ -1,9 +1,9 @@
 
-@testset "Action" for A in [
-    RotationAction(Euclidean(3), SpecialOrthogonal(3)),
-    GroupOperationAction(SpecialOrthogonal(3), Manifolds.LeftForwardAction()),
-    GroupOperationAction(SpecialOrthogonal(3), Manifolds.RightForwardAction()),
-    GroupOperationAction(SpecialOrthogonal(3), Manifolds.LeftBackwardAction()),
+@testset "Action $name" for (name, A) in [
+    "Rot plane" => RotationAction(Euclidean(3), SpecialOrthogonal(3)),
+    "SO L" => GroupOperationAction(SpecialOrthogonal(3), Manifolds.LeftForwardAction()),
+    "SO R*" => GroupOperationAction(SpecialOrthogonal(3), Manifolds.RightForwardAction()),
+    "SO L*" => GroupOperationAction(SpecialOrthogonal(3), Manifolds.LeftBackwardAction()),
 ]
     G = base_group(A)
     χ1, χ2 = [rand(rng, G) for i in 1:2]
