@@ -22,7 +22,9 @@ alg_rep(::Any, x) = x
         @test GT.check_apply_diff_group_at_id(G, ξ1, side, identity_element)
         @test GT.check_inv_diff(G, χ1, ξ1, side)
     end
-    @test GT.check_exp_invariant(G, exp, χ1, v1, χ2)
+    @testset "$conv" for conv in [(LeftAction(), LeftSide()), (RightAction(), RightSide())]
+        @test GT.check_exp_invariant(G, exp, χ1, v1, χ2, conv)
+    end
     @test GT.check_exp_log(G, exp, log, χ1, χ2)
     @test GT.check_log_exp(G, log, exp, χ1, v1)
     v = similar(v1)

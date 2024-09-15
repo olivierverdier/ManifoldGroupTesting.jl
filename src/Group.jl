@@ -154,22 +154,23 @@ is the same as the zero_vector at `identity_element(G)`.
 check_zero_Identity(G) = isapprox(algebra(G), zero_vector(G, Identity(G)), zero_vector(G, identity_element(G)))
 
 """
-    check_exp_invariant(G, exp, χ, v, χ_)
+    check_exp_invariant(G, exp, χ, v, χ_, conv=(LeftAction(), LeftSide()))
 
 The invariant exponential of  a Lie group fulfils
 ```math
 χ' \exp_{χ}(v) = \exp_{χ'χ}(χ' v)
 ```
 
-There is a right version which is not implemented. It would check that
+There is a right version which is:
 ```math
 \exp_χ(v) χ' = \exp_{χχ'}(v χ')
 ```
 """
-check_exp_invariant(G, exp, χ, v, χ_) = begin
-    χ1 = translate(G, χ_, exp(G, χ, v), (LeftAction(), LeftSide()))
-    v_ = translate_diff(G, χ_, χ, v, (LeftAction(), LeftSide()))
-    χ_χ = translate(G, χ_, χ, (LeftAction(), LeftSide()))
+check_exp_invariant(G, exp, χ, v, χ_, conv=(LeftAction(), LeftSide())) = begin
+    A = GroupOperationAction(G, conv)
+    χ1 = apply(A, χ_, exp(G, χ, v))
+    v_ = apply_diff(A, χ_, χ, v)
+    χ_χ = apply(A, χ_, χ)
     χ2 = exp(G, χ_χ, v_)
     return isapprox(G, χ1, χ2)
 end
