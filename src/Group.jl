@@ -145,9 +145,13 @@ check_alg_rep(G, alg_rep, ξ1, ξ2) = begin
     return isapprox(expected, computed)
 end
 
-check_zero_Identity(G) = isapprox(algebra(G),
-                                  zero_vector(G, Identity(G)),
-                                  zero_vector(G, identity_element(G)))
+"""
+    check_zero_Identity(G)
+
+The zero vector at `Identity(G)`
+is the same as the zero_vector at `identity_element(G)`.
+"""
+check_zero_Identity(G) = isapprox(algebra(G), zero_vector(G, Identity(G)), zero_vector(G, identity_element(G)))
 
 """
     check_exp_invariant(G, exp, χ, v, χ_)
