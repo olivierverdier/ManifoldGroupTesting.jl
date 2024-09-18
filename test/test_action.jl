@@ -16,4 +16,10 @@
     @testset for id_func in [Identity, identity_element]
         @test GT.check_apply_diff_group(A, χ1, ξ1, p) broken = A isa RotationAction
     end
+    @testset "apply_diff lin" begin
+        X = rand(rng, group_manifold(A); vector_at=p)
+        Y = rand(rng, group_manifold(A); vector_at=p)
+        λ = randn(rng)
+        @test GT.check_apply_diff_linear(A, χ1, p, X, Y, λ)
+    end
 end

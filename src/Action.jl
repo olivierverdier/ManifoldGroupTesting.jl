@@ -66,6 +66,24 @@ check_trivial_infinitesimal_action(A::AbstractGroupAction, p, id=Identity) = beg
     return isapprox(TM, computed, expected)
 end
 
+"""
+    check_apply_diff_linear(A::AbstractGroupAction, χ, p, X, Y, λ=1.)
+
+If the action ``α`` is a group action, its differential with respect
+to the point ``p`` is linear.
+Fix ``χ ∈ G``, define ``π_χ(p) ≔ α(χ, p)`` and ``q ≔ π_{χ}(p)``.
+We have
+```math
+⟨Dπ_{χ}, X + λY ⟩_p = ⟨Dπ_{χ}, X⟩_q + λ ⟨Dπ_{χ}, Y⟩_q
+```
+"""
+check_apply_diff_linear(A::AbstractGroupAction, χ, p, X, Y, λ=1.) = begin
+    q = apply(A, χ, p)
+    computed = apply_diff(A, χ, p, X + λ*Y)
+    expected = apply_diff(A, χ, p, X) + λ*apply_diff(A, χ, p, Y)
+    return isapprox(TangentSpace(group_manifold(A), q), computed, expected)
+end
+
 
 """
     check_switch_action_direction(α::GroupAction, χ, p)
