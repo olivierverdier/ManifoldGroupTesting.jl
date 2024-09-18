@@ -16,13 +16,13 @@ _transporter(G, χ, ξ, dir) = translate_from_id(G, χ, ξ, _get_side_from_actio
         id_func, # `identity_element` or `Identity`
     )
 
-This should hold for *any* group action ``A`` on any manifold.
-If you define ``π_p(χ) := A(χ, p)`` for ``χ ∈ G`` and ``p ∈ M``,
+This should hold for *any* group action ``α`` on any manifold.
+If you define ``π_p(χ) := α(χ, p)`` for ``χ ∈ G`` and ``p ∈ M``,
 and define, for ``ξ ∈ Alg(G)``,
  ``T_R(χ, ξ) := ξχ`` (the right translation),
 and ``T_L(χ, ξ) := χξ`` (the left translation), then we have the identity:
 ```math
-⟨Dπ_{p}(χ), T(χ, ξ)⟩ = ⟨Dπ_{A(χ,p)}(1), ξ⟩
+⟨Dπ_{p}(χ), T(χ, ξ)⟩ = ⟨Dπ_{α(χ,p)}(1), ξ⟩
 ```
 where, for a *left* action, ``T`` is the *right* translation,
 and for a *right* action, ``T`` is the *left* translation.

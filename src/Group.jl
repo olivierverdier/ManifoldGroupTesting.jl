@@ -5,32 +5,36 @@ A collection of general purpose methods
 for testing Lie groups.
 """
 
-"""
-``Ad`` and ``exp`` commute:
-```math
-Ad_{exp(ξ_1)}ξ_2 = exp(ad_{ξ_1}) ξ_2
-```
-"""
-function check_exp_ad(G, vel, tvel)
-    χ = exp_lie(G, vel)
-    Ad_exp = adjoint_action(G, χ, tvel)
+@doc raw"""
+    check_exp_ad(G, ξ_1, ξ_2)
 
-    lie_bracket(G, vel, tvel)
+``\mathrm{Ad}`` and ``\exp`` commute in the sense that
+```math
+{\exp(ξ_1)}ξ_2 \exp(-ξ_1) = \exp([ξ_1, \cdot]) ξ_2
+```
+where the second exponential is the matrix exponential for the
+linear operator ``ξ ↦ [ξ_1, ξ]``.
+"""
+function check_exp_ad(G, ξ_1, ξ_2)
+    χ = exp_lie(G, ξ_1)
+    Ad_exp = adjoint_action(G, χ, ξ_2)
+
+    lie_bracket(G, ξ_1, ξ_2)
     B = DefaultOrthogonalBasis()
-    der = matrix_from_lin_endomorphism(G, ξ -> lie_bracket(G, vel, ξ), B)
+    der = matrix_from_lin_endomorphism(G, ξ -> lie_bracket(G, ξ_1, ξ), B)
     mor = exp(der)
-    tvel_coord = get_coordinates_lie(G, tvel, B)
-    exp_ad = get_vector_lie(G, mor * tvel_coord, B)
+    ξ_2_coord = get_coordinates_lie(G, ξ_2, B)
+    exp_ad = get_vector_lie(G, mor * ξ_2_coord, B)
     return isapprox(algebra(G), Ad_exp, exp_ad)
 end
 
-"""
+@doc raw"""
     check_adjoint_action(G, grp_rep, alg_rep, χ, ξ)
 
 The group representation ``ρ`` and algebra representation ``ρ``
  commute with the adjoint action:
 ```math
-ρ(χ) ρ(ξ) ρ(χ)^{-1} = ρ(Ad_χ (ξ))
+ρ(χ) ρ(ξ) ρ(χ)^{-1} = ρ(\mathrm{Ad}_χ (ξ))
 ```
 """
 check_adjoint_action(G, grp_rep, alg_rep, χ, ξ) = begin
@@ -60,23 +64,23 @@ end
 
 _switch_sign(ξ, ::LeftSide) = ξ
 _switch_sign(ξ, ::RightSide) = -ξ
-"""
+@doc raw"""
     check_apply_diff_group_at_id(G, side::GroupActionSide)
 
-The left group operation action on itself ``α(χ_1)χ_2``
+The covariant group operation action on itself ``α(χ_1, χ_2)``
 is either (left side)
 ```math
-α(χ_1)χ_2 = χ_1 χ_2
+α(χ_1, χ_2) = χ_1 χ_2
 ```
 or (right side)
 ```math
-α(χ_1)χ_2 = χ_2 χ_1^{-1}
+α(χ_1, χ_2) = χ_2 χ_1^{-1}
 ```
-Now fix ``χ_2 = 1`` (1 is the identity of ``G``) and define ``f : G → G`` by ``f(χ) := α(χ) 1``. Since ``f(1) = 1``,
-its differential at identity is a map ``Alg(G) → Alg(G)``.
+Now fix ``χ_2 = 1`` (``1`` is the identity of ``G``) and define ``f : G → G`` by ``f(χ) := α(χ, 1)``. Since ``f(1) = 1``,
+its differential at identity is a map ``\mathrm{Alg}(G) → \mathrm{Alg}(G)``.
 This map is either
-- ``Id`` (left side)
-- ``-Id`` (right side)
+- ``I`` (left side)
+- ``-I`` (right side)
 """
 check_apply_diff_group_at_id(G, ξ, side::Manifolds.GroupActionSide, id_func=Identity) = begin
     id = id_func(G)
@@ -84,20 +88,23 @@ check_apply_diff_group_at_id(G, ξ, side::Manifolds.GroupActionSide, id_func=Ide
     return isapprox(algebra(G), ξ, _switch_sign(ξ_, side))
 end
 
-"""
+@doc raw"""
     check_exp_lie_point(G, ξ)
 
-The Lie group exponential sends the vector ξ
+The Lie group exponential sends the vector ``ξ \in \mathfrak{g}`` in the algebra
 to an element in the group.
+```math
+\exp(ξ)\in G
+```
 """
 check_exp_lie_point(G, ξ) = is_point(G, exp_lie(G, ξ))
 
-"""
+@doc raw"""
     check_adjoint_action_in_alg(G, χ, ξ)
 
-The adjoint action of χ on ξ is an element of Alg(G):
+The adjoint action of ``χ`` on ``ξ`` is an element of ``\mathrm{Alg}(G)``:
 ```math
-Ad_{χ}ξ ∈ Alg(G)
+\mathrm{Ad}_{χ}ξ ∈ \mathrm{Alg}(G)
 ```
 """
 check_adjoint_action_in_alg(G, χ, ξ) = is_vector(G, identity_element(G), adjoint_action(G, χ, ξ))
@@ -105,7 +112,7 @@ check_adjoint_action_in_alg(G, χ, ξ) = is_vector(G, identity_element(G), adjoi
 """
     check_grp_rep_Identity(G)
 
-The representation works at the Identity(G) point.
+The representation works at the point `Identity(G)`.
 """
 check_grp_rep_Identity(G, grp_rep) = begin
     expected = grp_rep(G, identity_element(G))
@@ -149,11 +156,11 @@ end
     check_zero_Identity(G)
 
 The zero vector at `Identity(G)`
-is the same as the zero_vector at `identity_element(G)`.
+is the same as the zero vector at `identity_element(G)`.
 """
 check_zero_Identity(G) = isapprox(algebra(G), zero_vector(G, Identity(G)), zero_vector(G, identity_element(G)))
 
-"""
+@doc raw"""
     check_exp_invariant(G, exp, χ, v, χ_, conv=(LeftAction(), LeftSide()))
 
 The invariant exponential of  a Lie group fulfils
@@ -196,12 +203,12 @@ check_log_log_(G, log, log!, v_, χ1, χ2) = begin
     return v__ === v_ && isapprox(TangentSpace(G, χ1), v, v__)
 end
 
-"""
+@doc raw"""
     check_exp_log(G, exp, log, χ1, χ2)
 
 Check the identity
 ```math
-exp_{χ_1}(log_{χ_1}(χ_2)) = χ_2
+\exp_{χ_1}(\log_{χ_1}(χ_2)) = χ_2
 ```
 """
 check_exp_log(G, exp, log, χ1, χ2) = begin
@@ -209,12 +216,13 @@ check_exp_log(G, exp, log, χ1, χ2) = begin
     χ_ = exp(G, χ1, v)
     return isapprox(G, χ2, χ_)
 end
-"""
+
+@doc raw"""
     check_log_exp(G, log, exp, χ, v)
 
 Check the identity
 ```math
-log_{χ}(exp_{χ}(v)) = v
+\log_{χ}(\exp_{χ}(v)) = v
 ```
 """
 check_log_exp(G, log, exp, χ, v) = begin

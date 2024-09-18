@@ -5,7 +5,7 @@ _compose_dir(G, χ1, χ2, ::RightAction) = compose(G, χ2, χ1)
 """
     check_action_morphism(α::GroupAction, χ1, χ2, p)
 
-For a group action `α`,
+For a group action ``α``,
 ```math
 α(χ_1, α(χ_2, p)) = α(m(χ_1, χ_2), p)
 ```
@@ -35,7 +35,7 @@ For any action ``α`` and ``p`` in the manifold, one has
 ```math
 α(1, p) = p
 ```
-where ``1`` denotes ``Identity(G)`` where ``G`` is the
+where ``1`` denotes `Identity(G)` and ``G`` is the
 action group.
 """
 check_apply_morphism_Identity(A::AbstractGroupAction, p) = begin
