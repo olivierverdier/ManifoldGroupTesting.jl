@@ -31,4 +31,5 @@ alg_rep(::Any, x) = x
     @test GT.check_log_log_(G, log, log!, v, χ1, χ2)
     χ = similar(χ1)
     @test GT.check_exp_exp_(G, exp, exp!, χ, χ1, v1)
+    @test GT.check_exp_lie_ad(G, χ1, ξ1)
 end

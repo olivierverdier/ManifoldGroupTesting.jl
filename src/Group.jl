@@ -230,3 +230,17 @@ check_log_exp(G, log, exp, χ, v) = begin
     v_ = log(G, χ, χ_)
     return isapprox(TangentSpace(G, χ), v, v_)
 end
+
+@doc raw"""
+The group exponential commutes with the adjoint action:
+```math
+\exp(χξχ^{-1}) = χ\exp(ξ)χ^{-1}
+```
+"""
+check_exp_lie_ad(G, χ, ξ) = begin
+    ξ_ = adjoint_action(G, χ, ξ)
+    computed = exp_lie(G, ξ_)
+    χ_ = exp_lie(G, ξ)
+    expected = apply(GroupOperationAction(G, (LeftAction(), RightSide())), χ, apply(GroupOperationAction(G), χ, χ_))
+    return isapprox(G, computed, expected)
+end

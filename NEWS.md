@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Lie exponential commutes with adjoint action
 - improved docs
 - exponential invariance from two sides
 
