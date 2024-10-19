@@ -17,7 +17,11 @@ alg_rep(::Any, x) = x
     @test GT.check_grp_rep_compose(G, grp_rep, χ1, χ2)
     @test GT.check_alg_rep(G, alg_rep, ξ1, ξ2)
     @test GT.check_zero_Identity(G) broken=true # fails for SpecialOrthogonal
-    Test.@test GT.check_exp_ad(G, ξ1, ξ2) broken=G isa AbstractDecoratorManifold{ℂ}
+    if G isa AbstractDecoratorManifold{ℂ}
+        @test_throws MethodError GT.check_exp_ad(G, ξ1, ξ2)
+    else
+        @test GT.check_exp_ad(G, ξ1, ξ2)
+    end
     @test GT.check_adjoint_action(G, grp_rep, alg_rep, χ1, ξ1)
     @test GT.check_inv_rep(G, grp_rep, χ1)
     @testset "$side" for side in [LeftSide(), RightSide()]

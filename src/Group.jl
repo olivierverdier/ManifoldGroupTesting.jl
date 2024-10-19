@@ -15,7 +15,7 @@ for testing Lie groups.
 where the second exponential is the matrix exponential for the
 linear operator ``ξ ↦ [ξ_1, ξ]``.
 """
-function check_exp_ad(G, ξ_1, ξ_2)
+function check_exp_ad(G::AbstractDecoratorManifold{ℝ}, ξ_1, ξ_2)
     χ = exp_lie(G, ξ_1)
     Ad_exp = adjoint_action(G, χ, ξ_2)
 
