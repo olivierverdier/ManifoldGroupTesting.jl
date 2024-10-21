@@ -1,7 +1,7 @@
 name = "ManifoldGroupTesting"
 uuid = "3d9140b9-2699-468e-abff-6b59d65ee1fd"
 authors = ["Olivier Verdier <olivier.verdier@gmail.com> and contributors"]
-version = "0.2.3"
+version = "0.2.4"
 
 [deps]
 ManifoldGroupUtils = "1a3c8808-2843-4c72-af8e-d50ed15039bf"
