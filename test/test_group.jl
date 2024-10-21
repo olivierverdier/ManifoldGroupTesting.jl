@@ -23,6 +23,7 @@ alg_rep(::Any, x) = x
         @test GT.check_exp_ad(G, ξ1, ξ2)
     end
     @test GT.check_adjoint_action(G, grp_rep, alg_rep, χ1, ξ1)
+    @test GT.check_adjoint_action_lie_bracket(G, χ1, ξ1, ξ2)
     @test GT.check_inv_rep(G, grp_rep, χ1)
     @testset "$side" for side in [LeftSide(), RightSide()]
         @test GT.check_apply_diff_group_at_id(G, ξ1, side, Identity)

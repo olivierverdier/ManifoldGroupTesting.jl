@@ -110,6 +110,21 @@ The adjoint action of ``χ`` on ``ξ`` is an element of ``\mathrm{Alg}(G)``:
 check_adjoint_action_in_alg(G, χ, ξ) = is_vector(G, identity_element(G), adjoint_action(G, χ, ξ))
 
 """
+    check_adjoint_action_lie_bracket(G, χ, ξ1, ξ2)
+
+Adjoint action commutes with Lie bracket.
+
+```math
+χ [ξ_1, ξ_2] χ^{-1} = [χξ_1χ^{-1}, χξ_2χ^{-1}]
+```
+"""
+check_adjoint_action_lie_bracket(G, χ, ξ1, ξ2) = begin
+    left = adjoint_action(G, χ, lie_bracket(G, ξ1, ξ2))
+    right = lie_bracket(G, adjoint_action(G, χ, ξ1), adjoint_action(G, χ, ξ2))
+    return isapprox(algebra(G), left, right)
+end
+
+"""
     check_grp_rep_Identity(G)
 
 The representation works at the point `Identity(G)`.
